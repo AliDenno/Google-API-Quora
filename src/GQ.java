@@ -1,7 +1,8 @@
 
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,11 +22,13 @@ public class GQ {
 	  }
 	public static void main(String[] args) {
 		GQ obj = new GQ();
-		Set<String> result = obj.getDataFromGoogle("where to buy stamps");
+		List<String> result = obj.getDataFromGoogle("where to buy stamps");
+	//	Set<String> result = obj.getDataFromGoogle("where to buy stamps");
+		
 		for(String temp : result){
 			System.out.println(temp);
 		}
-		System.out.println(result.size());
+		//System.out.println(result.size());
 	  }
 
 	  public String getDomainName(String url){
@@ -39,9 +42,11 @@ public class GQ {
 
 	  }
 
-	  private Set<String> getDataFromGoogle(String query) {
+	  private List <String> getDataFromGoogle(String query) {
 
-		Set<String> result = new HashSet<String>();
+		  
+		  List<String> result = new ArrayList<String>();
+	
 		String request = "https://www.google.com/search?q=" + query + " site:https://www.quora.com";
 		System.out.println("Sending request..." + request);
 
@@ -58,15 +63,38 @@ public class GQ {
 			Elements links = doc.select("a[href]");
 			//Elements tag = doc.getElementsByTag("h3");
 			//Elements links = tag.select("a[href]");
+			int counter =0 ;
 			for (Element link : links) {
-
+			
 				String temp = link.attr("href");
 				if(temp.startsWith("/url?q=")){
 	                                //use regex to get domain name
 					//result.add(getDomainName(temp));
-					result.add(temp);
-				}
+					
+				//	System.out.println("->"+temp);
+					//String str = "ABC[ This is the text to be extracted ]";    
+					//String Newstr = str.substring(str.indexOf("www.") + 1, str.indexOf("&sa"));
+					
+					String pattern1 = "://";
+					String pattern2 = "&sa";
+					String text = temp;
 
+					Pattern p = Pattern.compile(Pattern.quote(pattern1) + "(.*?)" + Pattern.quote(pattern2));
+					Matcher m = p.matcher(text);
+					String holder="";
+					while (m.find()) {
+					 // System.out.println("While: "+m.group(1));
+					  holder=m.group(1);
+					  }
+					
+					if(counter<3){
+					result.add(holder);
+					counter++;
+					}
+					else{
+						return result;
+					}
+				}
 			}
 
 		} catch (IOException e) {
