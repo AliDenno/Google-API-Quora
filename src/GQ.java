@@ -11,6 +11,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+
 
 public class GQ {
 	 private static Pattern patternDomainName;
@@ -20,16 +22,43 @@ public class GQ {
 	  static {
 		patternDomainName = Pattern.compile(DOMAIN_NAME_PATTERN);
 	  }
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		GQ obj = new GQ();
-		List<String> result = obj.getDataFromGoogle("where to buy stamps");
+	//	List<String> result = obj.getDataFromGoogle("where to buy stamps");
 	//	Set<String> result = obj.getDataFromGoogle("where to buy stamps");
 		
-		for(String temp : result){
-			System.out.println(temp);
-		}
+	//	for(String temp : result){
+	//		System.out.println(temp);
+	//	}
 		//System.out.println(result.size());
-	  }
+		
+		File input = new File("/tmp/input.html");
+		Document doc;
+		try {
+			doc = Jsoup.parse(input, "UTF-8", "https://www.quora.com/In-Manhattan-where-besides-a-post-office-can-I-buy-postage-stamps");
+
+			Element content = doc.getElementById("content");
+			Elements links = content.getElementsByTag("a");
+			Elements count = content.getElementsByClass("answer_count");
+			
+			System.out.println(count.text());
+			
+			for (Element link : links) {
+			  String linkHref = link.attr("href");
+			  String linkText = link.text();
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
+		
+	
+		
+	  }*/
 
 	  public String getDomainName(String url){
 
